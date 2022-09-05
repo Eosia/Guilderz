@@ -18,6 +18,10 @@ use App\Http\Controllers\ContactController;
 Route::get('/', function () {return view('contact.index');})->name('contact');
 
 // route de la page contact
-Route::get('/contact', [ContactController::class, 'index'])->name('contact');
+#Route::get('/contact', [ContactController::class, 'index'])->name('contact');
 // route d'envoi du mail
 Route::post('/send-message', [ContactController::class, 'send'])->name('contact.send');
+
+//routes captcha
+Route::post('my-captcha', [ContactController::class, 'CaptchaPost'])->name('myCaptcha.post');
+Route::get('refresh_captcha', [ContactController::class, 'refreshCaptcha'])->name('refresh_captcha');

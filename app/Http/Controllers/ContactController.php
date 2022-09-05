@@ -16,16 +16,21 @@ class ContactController extends Controller
         return view('contact.index');
     }
 
+    // fonction du captcha
+    public function refreshCaptcha()
+    {
+        return response()->json(['captcha'=> captcha_img()]);
+    }
 
     // fonction d'envoi du mail
     public function send(Request $request)
     {
-
         $details = $request->validate([
             'name' => 'required|min:2|string',
             'email' => 'email|required|min:4',
             'subject' => 'required|min:4',
             'message' => 'required|min:6',
+            'captcha' => 'required|captcha',
         ]);
 
         $ip = $request->ip();

@@ -9,6 +9,10 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" crossorigin="anonymous"></script>
     <!--bootstrap/-->
+
+    <!--jquery import-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <!--jquery import/-->
 </head>
 <body>
 
@@ -46,8 +50,14 @@
 
     <!--formulaire-->
     <form method="POST" action="{{ route('contact.send') }}" enctype="multipart/form-data" class="col-11 col-sm-11 col-md-10 col-lg-8 col-6 mx-auto">
+        
         <!--protection anti csrf-->
         @csrf
+
+        <!--honeypot-->
+        <x-honeypot />
+        <input name="myField" type="text" class="d-none">
+        <!--honeypot/-->
 
         <!--Nom-->
         <div class="mt-3">
@@ -75,7 +85,7 @@
 
         <!--Sujet-->
         <div class="mt-3">
-            <label for="subject" class="form-label">Votre nom</label>
+            <label for="subject" class="form-label">Votre sujet</label>
             <input class="form-control" type="text" name="subject"  placeholder="Sujet de votre message ?" value="{!! old('subject' ?? '') !!}" id="subject" min="4" required>
 
             @error('name')
@@ -94,6 +104,32 @@
             @enderror
         </div>
         <!--Message/-->     
+
+        <!--captcha-->
+        <div>
+            <div class="w-full flex flex-col mt-8">
+                <div class="form-group{{ $errors->has('captcha') ? ' has-error' : '' }}">
+                    <label for="captcha" class="col-12 control-label">Veuillez remplir le captcha pour envoyer le message</label>
+                    <div class="col-md-12">
+                        <div class="captcha my-3">
+                            <span>{!! captcha_img() !!}</span>
+                            <br>
+                            <button type="button" class="btn btn-md btn-success my-3 btn-refresh">
+                                Rafraichir le captcha
+                            </button>
+                        </div>
+                        <input id="captcha" type="text" class="form-control" placeholder="Entrer le captcha" name="captcha" required>
+                        <div class="mt-3">
+
+                        @error('captcha')
+                            <div class="error text-danger mt-2 form-text">{{ $error='Captcha invalide' }}</div>
+                        @enderror
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--captcha-->
         
         <!--bouton d'envoi-->
         <div class="my-3">
@@ -103,10 +139,24 @@
 
 
 
-</form>
-
-
     </form>
+
+
+    
+    <!--script capctha-->
+    <script type="text/javascript">
+        $(".btn-refresh").click(function() {
+            $.ajax({
+                type: 'GET',
+                url: '/refresh_captcha',
+                success: function(data) {
+                    $(".captcha span").html(data.captcha);
+                }
+            });
+        });
+    </script>
+    <!--script captcha/-->
+
     <!--formulaire/-->
 
 </body>
