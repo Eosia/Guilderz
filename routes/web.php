@@ -21,7 +21,7 @@ Route::get('/', function () {return view('contact.index');})->name('contact');
 // route de la page contact
 Route::get('/', [ContactController::class, 'index'])->name('contact');
 // route d'envoi du mail
-Route::post('/send-message', [ContactController::class, 'send'])->name('contact.send');
+Route::post('/send-message', [ContactController::class, 'send'])->name('contact.send')->middleware(ProtectAgainstSpam::class);
 
 //routes captcha
 Route::post('my-captcha', [ContactController::class, 'CaptchaPost'])->name('myCaptcha.post');

@@ -51,9 +51,14 @@
     <!--notification/-->
 
     <!--formulaire-->
-    <form method="POST" action="{{ route('contact.send') }}" enctype="multipart/form-data" class="col-11 col-sm-11 col-md-10 col-lg-8 col-6 mx-auto">
+    <form method="POST" action="{{ route('contact.send') }}" enctype="multipart/form-data" class="col-11 col-sm-11 col-md-10 col-lg-8 col-6 mx-auto mb-5">
         <!--protection anti csrf-->
         @csrf
+
+        <!--honeypot-->
+        <x-honeypot />
+        <input name="myField" type="text" class="d-none">
+        <!--honeypot/-->
 
         <!--Nom-->
         <div class="mt-3">
@@ -107,7 +112,8 @@
                     <div class="col-md-12">
                         <div class="captcha my-3">
                             <span>{!! captcha_img() !!}</span>
-                            <button type="button" class="btn btn-md btn-success mt-3 btn-refresh">
+                            <br>
+                            <button type="button" class="btn btn-md btn-success my-3 btn-refresh">
                                 Refraichir le captcha
                             </button>
                         </div>
@@ -130,11 +136,6 @@
             <button type="submit" class="btn btn-primary">ENVOYER</button>
         </div>
         <!--bouton d'envoi/-->
-
-
-
-    </form>
-
 
     </form>
     <!--formulaire/-->
