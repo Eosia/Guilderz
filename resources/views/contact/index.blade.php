@@ -131,11 +131,6 @@
         </div>
         <!--bouton d'envoi/-->
 
-
-
-    </form>
-
-
     </form>
     <!--formulaire/-->
 
