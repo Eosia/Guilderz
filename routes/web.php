@@ -15,7 +15,7 @@ use App\Http\Controllers\ContactController;
 |
 */
 
-Route::get('/', function () {return view('contact.index');})->name('contact');
+Route::get('/', function () {return view('contact.index');})->name('contact')->middleware('throttle:contact');
 
 // route de la page contact
 #Route::get('/contact', [ContactController::class, 'index'])->name('contact');

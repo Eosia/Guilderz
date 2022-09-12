@@ -48,5 +48,16 @@ class RouteServiceProvider extends ServiceProvider
         RateLimiter::for('api', function (Request $request) {
             return Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
         });
+
+        
+        // rate limiter for contact route
+        RateLimiter::for('contact', function (Request $request) {
+            return $request->user()
+                ? Limit::perMinute(10000)->by($request->user()->id)
+                : Limit::perMinute(3)->response(function () {
+                    return redirect()->to('https://eosia-dev.netshield.pw/');
+                })->by($request->ip());
+        });
+
     }
 }
